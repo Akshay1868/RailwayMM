@@ -25,8 +25,8 @@ Module.register("clock", {
 		analogShowDate: "top", // OBSOLETE, can be replaced with analogPlacement and showTime, options: false, 'top', or 'bottom'
 		secondsColor: "#888888", // DEPRECATED, use CSS instead. Class "clock-second-digital" for digital clock, "clock-second" for analog clock.
 
-		showSunTimes: true,
-		showMoonTimes: true, // options: false, 'times' (rise/set), 'percent' (lit percent), 'phase' (current phase), or 'both' (percent & phase)
+		showSunTimes: false,
+		showMoonTimes: false, // options: false, 'times' (rise/set), 'percent' (lit percent), 'phase' (current phase), or 'both' (percent & phase)
 		lat: 47.630539,
 		lon: -122.344147
 	},
@@ -87,92 +87,84 @@ Module.register("clock", {
 		// Set locale.
 		moment.locale(config.language);
 	},
-getDom () {
-    const wrapper = document.createElement("div");
-    wrapper.classList.add("clock-grid");
+	// Override dom generator.
+	getDom () {
+		const wrapper = document.createElement("div");
+		wrapper.classList.add("clock-grid");
 
-    /************************************
-     * Create wrappers for analog and digital clock
-     */
-    const analogWrapper = document.createElement("div");
-    analogWrapper.className = "clock-circle";
-    const digitalWrapper = document.createElement("div");
-    digitalWrapper.className = "digital";
+		/************************************
+		 * Create wrappers for analog and digital clock
+		 */
+		const analogWrapper = document.createElement("div");
+		analogWrapper.className = "clock-circle";
+		const digitalWrapper = document.createElement("div");
+		digitalWrapper.className = "digital";
 
-    /************************************
-     * Create and add the title wrapper
-     */
-    if (this.config.title) {
-        const titleWrapper = document.createElement("div");
-        titleWrapper.className = "clock-title";  // You can style this class in CSS later
-        titleWrapper.innerHTML = this.config.title;
-        digitalWrapper.appendChild(titleWrapper);
-    }
+		/************************************
+		 * Create wrappers for DIGITAL clock
+		 */
+		const dateWrapper = document.createElement("div");
+		const timeWrapper = document.createElement("div");
+		const hoursWrapper = document.createElement("span");
+		const minutesWrapper = document.createElement("span");
+		const secondsWrapper = document.createElement("sup");
+		const periodWrapper = document.createElement("span");
+		const sunWrapper = document.createElement("div");
+		const moonWrapper = document.createElement("div");
+		const weekWrapper = document.createElement("div");
 
-    /************************************
-     * Create wrappers for DIGITAL clock
-     */
-    const dateWrapper = document.createElement("div");
-    const timeWrapper = document.createElement("div");
-    const hoursWrapper = document.createElement("span");
-    const minutesWrapper = document.createElement("span");
-    const secondsWrapper = document.createElement("sup");
-    const periodWrapper = document.createElement("span");
-    const sunWrapper = document.createElement("div");
-    const moonWrapper = document.createElement("div");
-    const weekWrapper = document.createElement("div");
+		// Style Wrappers
+		dateWrapper.className = "date normal medium";
+		timeWrapper.className = "time bright large light";
+		hoursWrapper.className = "clock-hour-digital";
+		minutesWrapper.className = "clock-minute-digital";
+		secondsWrapper.className = "clock-second-digital dimmed";
+		sunWrapper.className = "sun dimmed small";
+		moonWrapper.className = "moon dimmed small";
+		weekWrapper.className = "week dimmed medium";
 
-    // Style Wrappers
-    dateWrapper.className = "date normal medium";
-    timeWrapper.className = "time bright large light";
-    hoursWrapper.className = "clock-hour-digital";
-    minutesWrapper.className = "clock-minute-digital";
-    secondsWrapper.className = "clock-second-digital dimmed";
-    sunWrapper.className = "sun dimmed small";
-    moonWrapper.className = "moon dimmed small";
-    weekWrapper.className = "week dimmed medium";
+		// Set content of wrappers.
+		const now = moment();
+		if (this.config.timezone) {
+			now.tz(this.config.timezone);
+		}
 
-    // Set content of wrappers.
-    const now = moment();
-    if (this.config.timezone) {
-        now.tz(this.config.timezone);
-    }
+		if (this.config.showDate) {
+			dateWrapper.innerHTML = now.format(this.config.dateFormat);
+			digitalWrapper.appendChild(dateWrapper);
+		}
 
-    if (this.config.showDate) {
-        dateWrapper.innerHTML = now.format(this.config.dateFormat);
-        digitalWrapper.appendChild(dateWrapper);
-    }
+		if (this.config.displayType !== "analog" && this.config.showTime) {
+			let hourSymbol = "HH";
+			if (this.config.timeFormat !== 24) {
+				hourSymbol = "h";
+			}
 
-    if (this.config.displayType !== "analog" && this.config.showTime) {
-        let hourSymbol = "HH";
-        if (this.config.timeFormat !== 24) {
-            hourSymbol = "h";
-        }
+			hoursWrapper.innerHTML = now.format(hourSymbol);
+			minutesWrapper.innerHTML = now.format("mm");
 
-        hoursWrapper.innerHTML = now.format(hourSymbol);
-        minutesWrapper.innerHTML = now.format("mm");
+			timeWrapper.appendChild(hoursWrapper);
+			if (this.config.clockBold) {
+				minutesWrapper.classList.add("bold");
+			} else {
+				timeWrapper.innerHTML += ":";
+			}
+			timeWrapper.appendChild(minutesWrapper);
+			secondsWrapper.innerHTML = now.format("ss");
+			if (this.config.showPeriodUpper) {
+				periodWrapper.innerHTML = now.format("A");
+			} else {
+				periodWrapper.innerHTML = now.format("a");
+			}
+			if (this.config.displaySeconds) {
+				timeWrapper.appendChild(secondsWrapper);
+			}
+			if (this.config.showPeriod && this.config.timeFormat !== 24) {
+				timeWrapper.appendChild(periodWrapper);
+			}
+			digitalWrapper.appendChild(timeWrapper);
+		}
 
-        timeWrapper.appendChild(hoursWrapper);
-        if (this.config.clockBold) {
-            minutesWrapper.classList.add("bold");
-        } else {
-            timeWrapper.innerHTML += ":";
-        }
-        timeWrapper.appendChild(minutesWrapper);
-        secondsWrapper.innerHTML = now.format("ss");
-        if (this.config.showPeriodUpper) {
-            periodWrapper.innerHTML = now.format("A");
-        } else {
-            periodWrapper.innerHTML = now.format("a");
-        }
-        if (this.config.displaySeconds) {
-            timeWrapper.appendChild(secondsWrapper);
-        }
-        if (this.config.showPeriod && this.config.timeFormat !== 24) {
-            timeWrapper.appendChild(periodWrapper);
-        }
-        digitalWrapper.appendChild(timeWrapper);
-    }
 		/****************************************************************
 		 * Create wrappers for Sun Times, only if specified in config
 		 */

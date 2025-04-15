@@ -62,9 +62,13 @@
 		"*.css": "stylelint --fix"
 	},
 	"dependencies": {
+		"@fontsource/roboto": "^5.2.5",
+		"@fontsource/roboto-condensed": "^5.2.5",
 		"ajv": "^8.17.1",
+		"animate.css": "^4.1.1",
 		"ansis": "^3.17.0",
 		"console-stamp": "^3.1.2",
+		"croner": "^9.0.0",
 		"envsub": "^4.1.0",
 		"eslint": "^9.23.0",
 		"express": "^4.21.2",
@@ -76,6 +80,7 @@
 		"module-alias": "^2.2.3",
 		"moment": "^2.30.1",
 		"node-ical": "^0.20.1",
+		"nunjucks": "^3.2.4",
 		"pm2": "^5.4.3",
 		"socket.io": "^4.8.1",
 		"suncalc": "^1.9.0",
