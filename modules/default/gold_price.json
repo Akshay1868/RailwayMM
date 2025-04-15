@@ -1,0 +1,11 @@
+{
+  "current": {
+    "price_inr_per_gram": 9500,
+    "eur_to_inr": 97.15
+  },
+  "historical": {
+    "2024-04-01": {
+      "price_inr_per_gram": 8300
+    }
+  }
+}
