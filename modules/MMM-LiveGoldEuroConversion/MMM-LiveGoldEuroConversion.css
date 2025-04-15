@@ -1,0 +1,13 @@
+.gold-euro-wrapper {
+  font-size: 22px;
+  text-align: center;
+  padding: 10px;
+}
+.gold-price {
+  color: goldenrod;
+  margin: 5px 0;
+}
+.euro-inr {
+  color: green;
+  margin: 5px 0;
+}
