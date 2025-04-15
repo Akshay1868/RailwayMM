@@ -65,6 +65,19 @@ var config = {
   },
   page: "goldprice" // Optional: only if using multi-page setup
 },*/
+{
+  module: 'MMM-Carousel',
+  position: 'top_left',
+  config: {
+      // List of modules to display in the carousel
+      modules: [
+          'clock',
+          'newsfeed',
+          // add any other modules here
+      ],
+      rotationTime: 60000, // Time for each page (in ms) - 1 minute for each page
+  }
+},
     {
       module: "newsfeed",
       position: "bottom_bar", // Newsfeed at the bottom

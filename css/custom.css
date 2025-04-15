@@ -26,7 +26,8 @@
   --gap-body-left: 60px;
 
   --gap-modules: 30px;
-  body {
-    transition: background-color 1s ease-in-out;
+
 }
+body {
+  transition: background-color 1s ease-in-out;
 }
