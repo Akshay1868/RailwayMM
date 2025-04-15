@@ -1,6 +1,6 @@
 var config = {
   address: "0.0.0.0", // Listen on all addresses
-  port: 8080, // Default port
+    port: process.env.PORT || 8080, // Default port
   language: "en",
   ipWhitelist: [],   
   timeFormat: 24, // 24-hour format
