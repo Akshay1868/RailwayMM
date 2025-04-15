@@ -78,6 +78,14 @@ var config = {
       rotationTime: 60000, // Time for each page (in ms) - 1 minute for each page
   }
 },
+{
+  module: "MMM-LiveStream",
+  position: "top_center",
+  config: {
+      streamUrl: "https://www.youtube.com/embed/live_stream?channel=YOUR_CHANNEL_ID",
+      refreshInterval: 600000, // 10 minutes
+  }
+},
     {
       module: "newsfeed",
       position: "bottom_bar", // Newsfeed at the bottom
